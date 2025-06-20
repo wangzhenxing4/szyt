@@ -30,7 +30,7 @@
 				<text @click="handleUserRegister" class="text-blue">立即注册</text>
 			</view>
 			<view class="xieyi text-center">
-				<text class="text-grey1">登录即代表同意</text>
+				<text class="text-grey1">登录即您已阅读并同意</text>
 				<text @click="handleUserAgrement" class="text-blue">《用户协议》</text>
 				<text @click="handlePrivacy" class="text-blue">《隐私协议》</text>
 			</view>
