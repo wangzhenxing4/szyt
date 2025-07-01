@@ -354,11 +354,6 @@ $disabled-color: #f0f0f0;
   &:last-child {
     border-bottom: none;
   }
-  
-  &.switch-group {
-    display: flex;
-    align-items: center;
-  }
 }
 
 .form-label {
@@ -376,6 +371,8 @@ $disabled-color: #f0f0f0;
   font-size: 28rpx;
   border: 1px solid $border-color;
 }
+
+
 
 .switch-label {
   margin-left: 20rpx;

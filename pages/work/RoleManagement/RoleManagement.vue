@@ -185,7 +185,7 @@
             />
             <view class="error-tip" v-if="roleSortError">{{ roleSortError }}</view>
           </view>
-          <view class="form-group switch-group">
+          <view class="form-group">
             <text class="form-label">状态</text>
             <switch 
               class="form-switch" 
