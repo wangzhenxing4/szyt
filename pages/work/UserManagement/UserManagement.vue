@@ -225,14 +225,14 @@
           </view>
           <view class="form-group">
             <text class="form-label">状态</text>
+			<text class="switch-label">{{ form.status === '0' ? '启用' : '禁用' }}</text>
             <switch 
               class="form-switch" 
               :checked="form.status === '0'" 
               @change="onStatusSwitch"
               color="#1890ff"
             />
-            <text class="switch-label">{{ form.status === '0' ? '启用' : '禁用' }}</text>
-          </view>
+            </view>
         </scroll-view>
         
         <view class="popup-footer">
