@@ -3,165 +3,214 @@
     <!-- 顶部搜索栏 -->
     <view class="search-header">
       <view class="search-row">
-        <input 
-          class="search-input" 
-          placeholder="搜索用户名称" 
-          v-model="queryParams.userName"
-          @confirm="handleQuery"
-        />
+        <view class="input-container">
+          <uni-icons type="search" size="18" color="#999" class="search-icon"></uni-icons>
+          <input 
+            class="search-input" 
+            placeholder="搜索用户名称" 
+            v-model="queryParams.userName"
+            @confirm="handleQuery"
+          />
+        </view>
+        <view class="input-container">
+          <uni-icons type="phone" size="18" color="#999" class="search-icon"></uni-icons>
+          <input 
+            class="search-input" 
+            placeholder="搜索手机号码" 
+            v-model="queryParams.phonenumber"
+            @confirm="handleQuery"
+          />
+        </view>
       </view>
-      <view class="search-row">
-        <input 
-          class="search-input" 
-          placeholder="搜索手机号码" 
-          v-model="queryParams.phonenumber"
-          @confirm="handleQuery"
-        />
+      <view class="button-row">
+        <button class="search-btn" @tap="handleQuery">
+          <uni-icons type="search" size="16" color="#fff"></uni-icons> 搜索
+        </button>
+        <button class="search-btn reset" @tap="resetQuery">
+          <uni-icons type="refresh" size="16" color="#fff"></uni-icons> 重置
+        </button>
       </view>
-      <button class="search-btn" @tap="handleQuery">搜索</button>
-      <button class="search-btn reset" @tap="resetQuery">重置</button>
     </view>
     
     <!-- 操作按钮栏 -->
-    <scroll-view class="action-bar" scroll-x="true">
+    <!-- 操作按钮栏 - 水平排列 -->
+    <view class="action-bar-horizontal">
       <view class="action-btn primary" @tap="handleAdd">
-        <view class="action-icon">+</view>
+        <uni-icons type="plus" size="20" color="#fff"></uni-icons>
         <view class="action-btn-text">新增</view>
       </view>
-      <!-- <view class="action-btn" @tap="handleExport">
-        <view class="action-icon">↓</view>
-        <view class="action-btn-text">导出</view>
-      </view>
-      <view class="action-btn warning" @tap="handleImport">
-        <view class="action-icon">↑</view>
-        <view class="action-btn-text">导入</view>
-      </view> -->
+	<!--  <view class="action-btn" @tap="handleExport">
+	    <view class="action-icon">↓</view>
+	    <view class="action-btn-text">导出</view>
+	  </view>
+	  <view class="action-btn warning" @tap="handleImport">
+	    <view class="action-icon">↑</view>
+	    <view class="action-btn-text">导入</view>
+	  </view> -->
       <view class="action-btn danger" @tap="handleDeleteMultiple">
-        <view class="action-icon">×</view>
+        <uni-icons type="trash" size="20" color="#fff"></uni-icons>
         <view class="action-btn-text">删除</view>
       </view>
+	  </view>
     </scroll-view>
     
     <!-- 用户列表 -->
     <view class="user-list">
-      <view class="user-header">
-        <view>用户信息</view>
-        <view>状态</view>
-      </view>
-      
-      <block v-for="(user, index) in userList" :key="user.userId">
-        <view class="user-item">
-          <view class="user-info">
-            <view>
-              <view class="user-name">{{ user.nickName || user.userName }}</view>
-              <view class="user-id">ID: {{ user.userId }}</view>
-            </view>
-            <view 
-              class="switch" 
-              :class="{active: user.status === '0'}"
-              @tap="toggleUserStatus(user, index)"
-            ></view>
-          </view>
-          
-          <view class="user-details">
-            <view class="user-detail">
-              <view class="detail-label">手机：</view>
-              <view>{{ user.phonenumber || '无' }}</view>
-            </view>
-            <view class="user-detail">
-              <view class="detail-label">部门：</view>
-              <view>{{ user.dept ? user.dept.deptName : '无' }}</view>
-            </view>
-            <view class="user-detail">
-              <view class="detail-label">创建时间：</view>
-              <view>{{ formatDate(user.createTime) }}</view>
-            </view>
-          </view>
-          
-          <view class="user-actions">
-            <view class="action-icon edit" @tap="handleUpdate(user)">
-              <text>编辑</text>
-            </view>
-            <view class="action-icon delete" @tap="handleDelete(user)">
-              <text>删除</text>
-            </view>
-            <view class="action-icon more" @tap="handleMore(user)">
-              <text>更多</text>
-            </view>
-          </view>
-        </view>
-      </block>
-      
       <view v-if="userList.length === 0" class="empty">
-        <view>暂无用户数据</view>
+        <image src="/static/images/empty.png" class="empty-img" />
+        <view class="empty-text">暂无用户数据</view>
+        <button class="empty-btn" @tap="handleAdd">添加用户</button>
       </view>
+      
+      <block v-else>
+        <!-- 状态筛选 -->
+        <view class="list-header">
+            <text>共 {{ total }} 位用户</text>
+            <view class="status-filter">
+              <text 
+                :class="{active: statusIndex === 0}" 
+                @tap="changeStatus(0)"
+              >全部</text>
+              <text 
+                :class="{active: statusIndex === 1}" 
+                @tap="changeStatus(1)"
+              >启用</text>
+              <text 
+                :class="{active: statusIndex === 2}" 
+                @tap="changeStatus(2)"
+              >禁用</text>
+            </view>
+          </view>
+        
+        <block v-for="(user, index) in userList" :key="user.userId">
+          <view class="user-card" :class="{'card-disabled': user.status === '1'}">
+            <view class="card-header">
+              <view class="user-avatar">
+                <image :src="avatar" class="avatar-img" />
+              </view>
+              <view class="user-info">
+                <view class="user-name">{{ user.nickName || user.userName }}</view>
+                <view class="user-id">ID: {{ user.userId }}</view>
+              </view>
+              <view class="status-badge" :class="user.status === '0' ? 'active' : 'inactive'">
+                {{ user.status === '0' ? '启用中' : '已禁用' }}
+              </view>
+            </view>
+            
+            <view class="card-content">
+              <view class="info-row">
+                <uni-icons type="phone" size="14" color="#666"></uni-icons>
+                <text class="info-text">{{ user.phonenumber || '无手机号' }}</text>
+              </view>
+              <view class="info-row">
+                <uni-icons type="staff" size="14" color="#666"></uni-icons>
+                <text class="info-text">{{ user.dept ? user.dept.deptName : '无部门' }}</text>
+              </view>
+              <view class="info-row">
+                <uni-icons type="calendar" size="14" color="#666"></uni-icons>
+                <text class="info-text">{{ formatDate(user.createTime) }}</text>
+              </view>
+            </view>
+            
+            <view class="card-actions">
+              <view class="action-btn" @tap="toggleUserStatus(user, index)">
+                <uni-icons :type="user.status === '0' ? 'eye' : 'eye-slash'" size="18" 
+                  :color="user.status === '0' ? '#1890ff' : '#ff4d4f'"></uni-icons>
+                <text>{{ user.status === '0' ? '禁用' : '启用' }}</text>
+              </view>
+              <view class="action-btn" @tap="handleUpdate(user)">
+                <uni-icons type="compose" size="18" color="#666"></uni-icons>
+                <text>编辑</text>
+              </view>
+              <view class="action-btn" @tap="resetPassword(user)">
+                <uni-icons type="locked" size="18" color="#666"></uni-icons>
+                <text>重置密码</text>
+              </view>
+              <view class="action-btn" @tap="handleMore(user)">
+                <uni-icons type="more" size="18" color="#666"></uni-icons>
+              </view>
+            </view>
+          </view>
+        </block>
+      </block>
     </view>
-	
-    <!-- 添加的分页组件 -->
+    
+    <!-- 分页组件 -->
+    <view class="pagination-container" v-if="userList.length > 0">
       <uni-pagination 
         class="pagination"
         :current="queryParams.pageNum" 
         :total="total" 
         :pageSize="queryParams.pageSize"
         @change="handlePageChange"
+        :icon="true"
       />
-	  
+    </view>
+    
     <!-- 添加/编辑用户模态框 -->
-    <uni-popup ref="popup" type="bottom">
-      <view class="popup-content">
-        <view class="popup-header">{{ title }}</view>
-        <view class="form-group">
-          <view class="form-label">用户名称</view>
-          <input 
-            class="form-input" 
-            v-model="form.userName" 
-            placeholder="请输入用户名称" 
-            :disabled="!!form.userId"
-          />
+    <uni-popup ref="popup" type="center" :mask-click="false" class="custom-popup">
+      <view class="popup-card">
+        <view class="popup-header">
+          <text>{{ title }}</text>
+          <uni-icons type="closeempty" size="20" color="#999" @tap="cancelPopup"></uni-icons>
         </view>
-        <view class="form-group">
-          <view class="form-label">用户昵称</view>
-          <input 
-            class="form-input" 
-            v-model="form.nickName" 
-            placeholder="请输入用户昵称" 
-          />
-        </view>
-		<view v-if="!form.userId" class="form-group">
-		        <view class="form-label">登录密码</view>
-		        <input 
-		          class="form-input" 
-		          v-model="form.password" 
-		          placeholder="请输入登录密码" 
-		          type="password"
-		        />
-		      </view>
-        <view class="form-group">
-          <view class="form-label">手机号码</view>
-          <input 
-            class="form-input" 
-            v-model="form.phonenumber" 
-            placeholder="请输入手机号码" 
-            type="number"
-          />
-        </view>
-        <view class="form-group">
-          <view class="form-label">邮箱</view>
-          <input 
-            class="form-input" 
-            v-model="form.email" 
-            placeholder="请输入邮箱" 
-            type="email"
-          />
-        </view>
-        <view class="form-group">
-          <view class="form-label">状态</view>
-          <switch 
-            class="form-switch" 
-            :checked="form.status === '0'" 
-            @change="onStatusSwitch"
-          />
-        </view>
+        
+        <scroll-view scroll-y="true" class="form-container">
+          <view class="form-group">
+            <text class="form-label">用户名称</text>
+            <input 
+              class="form-input" 
+              v-model="form.userName" 
+              placeholder="请输入用户名称" 
+              :disabled="!!form.userId"
+            />
+          </view>
+          <view class="form-group">
+            <text class="form-label">用户昵称</text>
+            <input 
+              class="form-input" 
+              v-model="form.nickName" 
+              placeholder="请输入用户昵称" 
+            />
+          </view>
+          <view v-if="!form.userId" class="form-group">
+            <text class="form-label">登录密码</text>
+            <input 
+              class="form-input" 
+              v-model="form.password" 
+              placeholder="请输入登录密码" 
+              type="password"
+            />
+          </view>
+          <view class="form-group">
+            <text class="form-label">手机号码</text>
+            <input 
+              class="form-input" 
+              v-model="form.phonenumber" 
+              placeholder="请输入手机号码" 
+              type="number"
+            />
+          </view>
+          <view class="form-group">
+            <text class="form-label">邮箱</text>
+            <input 
+              class="form-input" 
+              v-model="form.email" 
+              placeholder="请输入邮箱" 
+              type="email"
+            />
+          </view>
+          <view class="form-group switch-group">
+            <text class="form-label">状态</text>
+            <switch 
+              class="form-switch" 
+              :checked="form.status === '0'" 
+              @change="onStatusSwitch"
+              color="#1890ff"
+            />
+            <text class="switch-label">{{ form.status === '0' ? '启用' : '禁用' }}</text>
+          </view>
+        </scroll-view>
         
         <view class="popup-footer">
           <button class="dialog-btn" @tap="cancelPopup">取消</button>
@@ -171,27 +220,34 @@
     </uni-popup>
     
     <!-- 重置密码弹出框 -->
-    <uni-popup ref="resetPwdPopup" type="dialog">
-      <view class="reset-pwd-popup">
-        <view class="popup-header">重置密码</view>
-        <view class="form-group">
-          <view class="form-label">新密码</view>
-          <input 
-            class="form-input" 
-            v-model="newPassword" 
-            placeholder="请输入新密码" 
-            type="password"
-          />
+    <uni-popup ref="resetPwdPopup" type="center" :mask-click="false" class="custom-popup">
+      <view class="popup-card">
+        <view class="popup-header">
+          <text>重置密码</text>
+          <uni-icons type="closeempty" size="20" color="#999" @tap="cancelResetPwd"></uni-icons>
         </view>
-        <view class="form-group">
-          <view class="form-label">确认密码</view>
-          <input 
-            class="form-input" 
-            v-model="confirmPassword" 
-            placeholder="请再次输入密码" 
-            type="password"
-          />
+        
+        <view class="form-container">
+          <view class="form-group">
+            <text class="form-label">新密码</text>
+            <input 
+              class="form-input" 
+              v-model="newPassword" 
+              placeholder="请输入新密码" 
+              type="password"
+            />
+          </view>
+          <view class="form-group">
+            <text class="form-label">确认密码</text>
+            <input 
+              class="form-input" 
+              v-model="confirmPassword" 
+              placeholder="请再次输入密码" 
+              type="password"
+            />
+          </view>
         </view>
+        
         <view class="popup-footer">
           <button class="dialog-btn" @tap="cancelResetPwd">取消</button>
           <button class="dialog-btn primary" @tap="confirmResetPwd">确定</button>
@@ -218,6 +274,8 @@ import {
 export default {
   data() {
     return {
+		statusOptions: ['全部', '启用', '禁用'],
+		      statusIndex: 0,
       newPassword: '',
       confirmPassword: '',
       currentResetUser: null, // 当前正在重置密码的用户
@@ -247,6 +305,11 @@ export default {
       selectedUserIds: []
     }
   },
+  computed: {
+    avatar() {
+      return this.$store.state.user.avatar
+    },
+	},
   onLoad() {
     this.getList();
   },
@@ -334,15 +397,15 @@ export default {
     },
     
     // 状态筛选变化
-    statusChange(e) {
-      this.statusIndex = e.detail.value;
-      if (this.statusIndex === 0) {
-        this.queryParams.status = undefined;
-      } else {
-        this.queryParams.status = this.statusIndex - 1;
-      }
-      this.handleQuery();
-    },
+     changeStatus(index) {
+          this.statusIndex = index;
+          if (index === 0) {
+            this.queryParams.status = undefined;
+          } else {
+            this.queryParams.status = index - 1;
+          }
+          this.handleQuery();
+        },
     
     // 切换用户状态
     async toggleUserStatus(user, index) {
@@ -665,13 +728,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-/* 引入公共SCSS */
-@import '@/static/scss/common.scss';
+@import "@/static/scss/common.scss";
 
-/* 页面特有样式 */
-.error-tip {
-  color: #F56C6C;
-  font-size: 12px;
-  margin-top: 4px;
-}
+
 </style>

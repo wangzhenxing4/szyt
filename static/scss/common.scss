@@ -1,223 +1,305 @@
-// 公共样式 - common.scss
-// 定义颜色变量
-$primary-color: #409EFF;
-$danger-color: #F56C6C;
-$warning-color: #E6A23C;
-$success-color: #67C23A;
-$info-color: #909399;
+/* 主色调 */
+$primary-color: #1890ff;
+$success-color: #52c41a;
+$danger-color: #ff4d4f;
+$warning-color: #faad14;
+$text-color: #333333;
+$text-light: #666666;
+$border-color: #eeeeee;
 $bg-color: #f5f7fa;
-$border-color: #DCDFE6;
+$disabled-color: #f0f0f0;
 
-// 定义尺寸变量
-$border-radius: 12px;
-$padding-sm: 8px;
-$padding-md: 12px;
-$padding-lg: 20px;
-$box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-
-// 容器样式
+/* 通用样式 */
 .app-container {
-  padding: 15px;
+  padding: 16px;
   background-color: $bg-color;
   min-height: 100vh;
+  box-sizing: border-box;
 }
 
-// 搜索栏样式
+/* 搜索区域 */
 .search-header {
-  background-color: #ffffff;
-  border-radius: $border-radius;
-  padding: $padding-md;
-  margin-bottom: 15px;
-  box-shadow: $box-shadow;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.03);
+}
+
+.search-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-direction: column;
   
-  .search-row {
-    display: flex;
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
+}
+
+.input-container {
+  position: relative;
+  flex: 1;
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.search-input {
+  width: 100%;
+  height: 40px;
+  background: #f5f7fa;
+  border-radius: 6px;
+  padding: 0 10px 0 35px;
+  font-size: 14px;
+  border: 1px solid $border-color;
+  transition: all 0.3s;
+  
+  &:focus {
+    border-color: $primary-color;
+    box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+  }
+}
+
+.button-row {
+  display: flex;
+  gap: 10px;
+}
+
+.search-btn {
+  flex: 1;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 6px;
+  font-size: 14px;
+  background: $primary-color;
+  color: #ffffff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &.reset {
+    background: #ffffff;
+    color: $text-light;
+    border: 1px solid $border-color;
+  }
+}
+
+/* 操作按钮栏 */
+.action-bar-horizontal {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding: 0 5px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 70px;
+  height: 40px;
+  border-radius: 8px;
+  padding: 0 15px;
+  font-size: 14px;
+  
+  &.primary {
+    background: $primary-color;
+    color: #ffffff;
+  }
+  
+  &.danger {
+    background: $danger-color;
+    color: #ffffff;
+  }
+  
+  .action-btn-text {
+    margin-left: 5px;
+  }
+}
+
+/* 角色列表 */
+.user-list {
+  margin-bottom: 20px;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  background: #ffffff;
+  border-radius: 8px;
+  color: $text-light;
+  font-size: 14px;
+  
+  .empty-img {
+    width: 60px;
+    height: 60px;
     margin-bottom: 10px;
   }
   
-  .search-input {
-    flex: 1;
-    padding: $padding-sm $padding-md;
-    border: 1px solid $border-color;
-    border-radius: 18px;
-    font-size: 14px;
-    margin-right: 8px;
-    height: 36px;
+  .empty-btn {
+    margin-top: 10px;
+    background: $primary-color;
+    color: #ffffff;
   }
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  font-size: 14px;
+  color: $text-light;
+  background: #ffffff;
+  border-radius: 8px 8px 0 0;
+}
+
+.status-filter {
+  display: flex;
+  gap: 15px;
   
-  .search-btn {
-    background-color: $primary-color;
-    color: white;
-    border: none;
-    border-radius: 18px;
-    padding: 0 16px;
-    font-size: 14px;
-    height: 36px;
-    line-height: 36px;
+  text {
+    color: $text-light;
     
-    &.reset {
-      background-color: #909399;
+    &.active {
+      color: $primary-color;
+      font-weight: bold;
     }
   }
 }
 
-// 操作按钮栏样式
-.action-bar {
+.user-card {
+  background: #ffffff;
+  border-radius: 0 0 8px 8px;
+  margin-bottom: 10px;
+  padding: 10px;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.03);
+  
+  &.card-disabled {
+    opacity: 0.7;
+  }
+}
+
+.card-header {
   display: flex;
-  overflow-x: auto;
+  align-items: center;
+  margin-bottom: 10px;
+  
+  .user-avatar {
+    margin-right: 10px;
+  }
+  
+  .user-info {
+    flex: 1;
+    
+    .user-name {
+      font-size: 16px;
+      font-weight: 500;
+      color: $text-color;
+      margin-bottom: 5px;
+    }
+    
+    .user-id {
+      font-size: 12px;
+      color: $text-light;
+    }
+  }
+  
+  .status-badge {
+    font-size: 12px;
+    padding: 3px 8px;
+    border-radius: 10px;
+    
+    &.active {
+      background: rgba($success-color, 0.1);
+      color: $success-color;
+    }
+    
+    &.inactive {
+      background: rgba($danger-color, 0.1);
+      color: $danger-color;
+    }
+  }
+}
+
+.card-content {
   padding: 10px 0;
-  margin-bottom: 15px;
-  gap: 10px;
-  white-space: nowrap;
+  border-top: 1px solid $border-color;
+  border-bottom: 1px solid $border-color;
+  
+  .info-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: $text-light;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+    
+    .info-text {
+      margin-left: 5px;
+    }
+  }
+}
+
+.card-actions {
+  display: flex;
+  justify-content: space-around;
+  padding-top: 10px;
   
   .action-btn {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    min-width: 70px;
-    background: #ffffff;
-    border-radius: $border-radius;
-    padding: $padding-sm 5px;
-    box-shadow: $box-shadow;
-    text-align: center;
-    
-    &.primary {
-      background-color: $primary-color;
-      color: white;
-    }
-    
-    &.danger {
-      background-color: $danger-color;
-      color: white;
-    }
-    
-    &.warning {
-      background-color: $warning-color;
-      color: white;
-    }
-    
-    .action-icon {
-      color: #000000;
-      font-size: 18px;
-      margin-bottom: 4px;
-    }
-    
-    .action-btn-text {
-      font-size: 12px;
-    }
+    font-size: 12px;
+    color: $text-light;
   }
 }
 
-// 列表样式
-.user-list {
-  background-color: #ffffff;
-  border-radius: $border-radius;
-  box-shadow: $box-shadow;
-  overflow: hidden;
+/* 分页 */
+.pagination-container {
+  background: transparent;
+  margin: 10px 0;
+}
+
+/* 弹窗样式 */
+.custom-popup {
+  .popup-card {
+    background: #ffffff;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    margin: 0 auto;
+    overflow: hidden;
+  }
   
-  .user-header {
+  .popup-header {
     display: flex;
     justify-content: space-between;
-    padding: $padding-md;
-    font-weight: bold;
-    background-color: #f1f4f8;
+    align-items: center;
+    padding: 15px;
+    font-size: 16px;
+    font-weight: 500;
     border-bottom: 1px solid $border-color;
   }
   
-  .user-item {
-    border-bottom: 1px solid #eee;
-    padding: $padding-md;
-    position: relative;
-    
-    .user-info {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-      
-      .user-name {
-        font-weight: bold;
-        font-size: 16px;
-      }
-      
-      .user-id {
-        font-size: 12px;
-        color: #909399;
-        margin-top: 4px;
-      }
-    }
-    
-    .user-details {
-      display: grid;
-      grid-template-columns: repeat(1, 1fr);
-      gap: 8px;
-      margin: 10px 0;
-      
-      .user-detail {
-        display: flex;
-        align-items: center;
-        font-size: 14px;
-        
-        .detail-label {
-          color: #606266;
-          min-width: 80px;
-        }
-      }
-    }
-    
-    .user-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 8px;
-      margin-top: 10px;
-      
-      .action-icon {
-        width: 70px;
-        height: 36px;
-        border-radius: 18px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #f1f4f8;
-        font-size: 14px;
-        
-        &.edit {
-          color: $primary-color;
-          background-color: rgba(64, 158, 255, 0.1);
-        }
-        
-        &.delete {
-          color: $danger-color;
-          background-color: rgba(245, 108, 108, 0.1);
-        }
-        
-        &.more {
-          color: #909399;
-        }
-      }
-    }
-  }
-  
-  .empty {
-    text-align: center;
-    padding: 30px 0;
-    color: #909399;
-    font-size: 14px;
-  }
-}
-
-// 弹窗样式
-.popup-content {
-  padding: $padding-lg;
-  background: #ffffff;
-  border-radius: $border-radius $border-radius 0 0;
-  
-  .popup-header {
-    font-size: 18px;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 20px;
+  .form-container {
+    max-height: 60vh;
+    padding: 10px;
   }
   
   .form-group {
@@ -225,92 +307,135 @@ $box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
     
     .form-label {
       display: block;
-      margin-bottom: 6px;
-      font-weight: 500;
+      font-size: 14px;
+      margin-bottom: 8px;
+      color: $text-color;
+    }
+    
+    .form-input, .form-textarea {
+      width: 100%;
+      background: #f5f7fa;
+      border-radius: 6px;
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid $border-color;
+      box-sizing: border-box;
     }
     
     .form-input {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid $border-color;
-      border-radius: 6px;
-      font-size: 14px;
-      height: 45px;
+      height: 40px;
+    }
+    
+    .form-textarea {
+      height: 100px;
+    }
+    
+    &.switch-group {
+      display: flex;
+      align-items: center;
+      
+      .form-switch {
+        margin-left: auto;
+      }
+      
+      .switch-label {
+        margin-left: 10px;
+        font-size: 14px;
+        color: $text-color;
+      }
+    }
+    
+    .error-tip {
+      color: $danger-color;
+      font-size: 12px;
+      margin-top: 5px;
     }
   }
   
   .popup-footer {
     display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-    gap: 10px;
+    padding: 10px;
+    border-top: 1px solid $border-color;
     
     .dialog-btn {
       flex: 1;
-      height: 44px;
-      line-height: 44px;
-      text-align: center;
+      height: 40px;
+      line-height: 40px;
       border-radius: 6px;
-      font-size: 16px;
+      margin: 0 5px;
       background: #ffffff;
+      color: $text-light;
       border: 1px solid $border-color;
+      font-size: 14px;
       
       &.primary {
         background: $primary-color;
-        color: white;
+        color: #ffffff;
         border: none;
       }
     }
   }
 }
-
-.reset-pwd-popup {
-  padding: $padding-lg;
-  background: #ffffff;
-  border-radius: $border-radius;
-  width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
+.user-avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 20rpx;
+  background: #f0f2f5;
+  
+  .avatar-img {
+    width: 100%;
+    height: 100%;
+  }
 }
 
-// 开关样式
-.switch {
-  position: relative;
-  width: 40px;
-  height: 22px;
-  border-radius: 11px;
-  background: #ddd;
-  
-  &:after {
-    content: '';
-    position: absolute;
-    width: 18px;
-    height: 18px;
-    background: white;
-    border-radius: 50%;
-    top: 2px;
-    left: 2px;
-    transition: all 0.3s;
+/* 响应式调整 */
+@media (min-width: 768px) {
+  .search-row {
+    flex-direction: row;
   }
   
-  &.active {
-    background: $primary-color;
+  .action-bar-horizontal {
+    justify-content: flex-start;
+  }
+  
+  .user-card {
+    padding: 15px;
+  }
+  
+  .card-actions {
+    justify-content: flex-end;
+    gap: 20px;
     
-    &:after {
-      left: 20px;
+    .action-btn {
+      flex-direction: row;
+      gap: 5px;
     }
   }
 }
-
-// 响应式样式
-@media (min-width: 768px) {
-  .user-details {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.status-filter {
+  background: #f5f7fa;
+  border-radius: 20px;
+  padding: 2px;
   
-  .popup-content {
-    max-width: 500px;
-    margin: 0 auto;
-    border-radius: $border-radius;
+  text {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    transition: all 0.3s;
+    
+    &.active {
+      background: $primary-color;
+      color: #fff;
+      font-weight: 500;
+    }
+    
+    &:not(.active) {
+      color: $text-light;
+      &:active {
+        opacity: 0.8;
+      }
+    }
   }
 }
