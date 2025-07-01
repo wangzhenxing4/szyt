@@ -54,7 +54,19 @@
       
       <block v-else>
         <!-- 状态筛选 -->
+		
         <view class="list-header">
+			<view class="list-header">
+			  <view class="select-all" @tap="toggleSelectAll">
+			    <uni-icons 
+			      :type="isAllSelected ? 'checkbox-filled' : 'circle'" 
+			      size="20" 
+			      :color="isAllSelected ? '#1890ff' : '#999'">
+			    </uni-icons>
+			    <text>全选</text>
+			  </view>
+			  
+			</view>
           <text>共 {{ total }} 个角色</text>
           <view class="status-filter">
             <text 
@@ -74,7 +86,14 @@
         
         <block v-for="(role, index) in roleList" :key="role.roleId">
           <view class="user-card" :class="{'card-disabled': role.status === '1'}">
-            <view class="card-header">
+            <view class="user-selector" @tap="selectRole(role.roleId)">
+                <uni-icons 
+                  :type="selectedRoleIds.includes(role.roleId) ? 'checkbox-filled' : 'circle'" 
+                  size="20" 
+                  :color="selectedRoleIds.includes(role.roleId) ? '#1890ff' : '#999'">
+                </uni-icons>
+              </view>
+			<view class="card-header">
               <view class="user-avatar">
                 <uni-icons type="person" size="40" color="#1890ff"></uni-icons>
               </view>
@@ -257,10 +276,22 @@ export default {
       selectedAuthUsers: []
     }
   },
+  computed: {
+    isAllSelected() {
+      return this.selectedRoleIds.length === this.roleList.length && this.roleList.length > 0;
+    }
+  },
   onLoad() {
     this.getList();
   },
   methods: {
+	  toggleSelectAll() {
+	      if (this.isAllSelected) {
+	        this.selectedRoleIds = [];
+	      } else {
+	        this.selectedRoleIds = this.roleList.map(role => role.roleId);
+	      }
+	    },
     // 处理显示顺序输入
     handleRoleSortInput(e) {
       let value = e.detail.value;
@@ -634,21 +665,16 @@ export default {
       } else {
         this.selectedRoleIds.splice(index, 1);
       }
-    }
+      // 添加震动反馈
+      uni.vibrateShort();
+    },
   }
 }
+
 </script>
 
 <style scoped lang="scss">
 /* 引入共享样式 */
 @import "@/static/scss/common.scss";
 
-/* 组件特有样式可以放在这里 */
-/* 例如： */
-.user-card {
-  &:active {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  }
-}
 </style>

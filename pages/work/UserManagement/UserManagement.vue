@@ -65,6 +65,17 @@
       <block v-else>
         <!-- 状态筛选 -->
         <view class="list-header">
+			<view class="list-header">
+			  <view class="select-all" @tap="toggleSelectAll">
+			    <uni-icons 
+			      :type="isAllSelected ? 'checkbox-filled' : 'circle'" 
+			      size="20" 
+			      :color="isAllSelected ? '#1890ff' : '#999'">
+			    </uni-icons>
+			    <text>全选</text>
+			  </view>
+			
+			  </view>
             <text>共 {{ total }} 位用户</text>
             <view class="status-filter">
               <text 
@@ -83,8 +94,20 @@
           </view>
         
         <block v-for="(user, index) in userList" :key="user.userId">
+			
           <view class="user-card" :class="{'card-disabled': user.status === '1'}">
-            <view class="card-header">
+            
+			
+			
+			<view class="user-selector" @tap="selectUser(user.userId)">
+                <uni-icons 
+                  :type="selectedUserIds.includes(user.userId) ? 'checkbox-filled' : 'circle'" 
+                  size="20" 
+                  :color="selectedUserIds.includes(user.userId) ? '#1890ff' : '#999'">
+                </uni-icons>
+              </view>
+			  
+			<view class="card-header">
               <view class="user-avatar">
                 <image :src="avatar" class="avatar-img" />
               </view>
@@ -309,11 +332,32 @@ export default {
     avatar() {
       return this.$store.state.user.avatar
     },
+	isAllSelected() {
+	    return this.selectedUserIds.length === this.userList.length && this.userList.length > 0;
+	  },
 	},
   onLoad() {
     this.getList();
   },
   methods: {
+	  toggleSelectAll() {
+	      if (this.isAllSelected) {
+	        this.selectedUserIds = [];
+	      } else {
+	        this.selectedUserIds = this.userList.map(user => user.userId);
+	      }
+	    },
+	  // 选择用户
+	  selectUser(userId) {
+	    const index = this.selectedUserIds.indexOf(userId);
+	    if (index === -1) {
+	      this.selectedUserIds.push(userId);
+	    } else {
+	      this.selectedUserIds.splice(index, 1);
+	    }
+	    // 添加震动反馈
+	    uni.vibrateShort();
+	  },
 	  // 分页变化
 	  handlePageChange(e) {
 	    this.queryParams.pageNum = e.current;
@@ -508,8 +552,7 @@ export default {
         success: async (res) => {
           if (res.confirm) {
             try {
-              const deletePromises = this.selectedUserIds.map(userId => delUser(userId));
-              await Promise.all(deletePromises);
+              await delUser(this.selectedUserIds.join(','));
               this.getList();
               this.selectedUserIds = [];
               uni.showToast({
@@ -526,7 +569,7 @@ export default {
         }
       });
     },
-    
+	
     // 导出按钮操作
     handleExport() {
       uni.showLoading({ title: '导出中...' });
@@ -728,7 +771,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+/* 引入共享样式 */
 @import "@/static/scss/common.scss";
-
 
 </style>
