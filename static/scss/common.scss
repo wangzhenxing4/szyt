@@ -1,316 +1,493 @@
-// 公共样式 - common.scss
-// 定义颜色变量
-$primary-color: #409EFF;
-$danger-color: #F56C6C;
-$warning-color: #E6A23C;
-$success-color: #67C23A;
-$info-color: #909399;
+
+/* 主色调 */
+$primary-color: #1890ff;
+$success-color: #52c41a;
+$danger-color: #ff4d4f;
+$warning-color: #faad14;
+$text-color: #333;
+$text-light: #666;
+$border-color: #eee;
 $bg-color: #f5f7fa;
-$border-color: #DCDFE6;
+$disabled-color: #f0f0f0;
 
-// 定义尺寸变量
-$border-radius: 12px;
-$padding-sm: 8px;
-$padding-md: 12px;
-$padding-lg: 20px;
-$box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-
-// 容器样式
+/* 基础样式 */
 .app-container {
-  padding: 15px;
+  padding: 16rpx;
   background-color: $bg-color;
   min-height: 100vh;
 }
 
-// 搜索栏样式
+/* 搜索区域 */
 .search-header {
-  background-color: #ffffff;
-  border-radius: $border-radius;
-  padding: $padding-md;
-  margin-bottom: 15px;
-  box-shadow: $box-shadow;
-  
-  .search-row {
-    display: flex;
-    margin-bottom: 10px;
-  }
-  
-  .search-input {
-    flex: 1;
-    padding: $padding-sm $padding-md;
-    border: 1px solid $border-color;
-    border-radius: 18px;
-    font-size: 14px;
-    margin-right: 8px;
-    height: 36px;
-  }
-  
-  .search-btn {
-    background-color: $primary-color;
-    color: white;
-    border: none;
-    border-radius: 18px;
-    padding: 0 16px;
-    font-size: 14px;
-    height: 36px;
-    line-height: 36px;
-    
-    &.reset {
-      background-color: #909399;
-    }
-  }
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.03);
 }
 
-// 操作按钮栏样式
-.action-bar {
+.search-row {
   display: flex;
-  overflow-x: auto;
-  padding: 10px 0;
-  margin-bottom: 15px;
-  gap: 10px;
+  gap: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.input-container {
+  flex: 1;
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  left: 20rpx;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.search-input {
+  height: 80rpx;
+  background: #f5f7fa;
+  border-radius: 12rpx;
+  padding: 0 20rpx 0 60rpx;
+  font-size: 28rpx;
+  border: 1px solid $border-color;
+  transition: all 0.3s;
+  
+  &:focus {
+    border-color: $primary-color;
+    box-shadow: 0 0 0 2rpx rgba($primary-color, 0.2);
+  }
+}
+
+.button-row {
+  display: flex;
+  gap: 20rpx;
+}
+
+.search-btn {
+  flex: 1;
+  height: 80rpx;
+  line-height: 80rpx;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  background: $primary-color;
+  color: #fff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &:active {
+    opacity: 0.9;
+  }
+  
+  &.reset {
+    background: #fff;
+    color: $text-light;
+    border: 1px solid $border-color;
+  }
+}
+
+/* 操作按钮栏 */
+.action-bar {
   white-space: nowrap;
+  margin-bottom: 20rpx;
+  padding: 0 10rpx;
+}
+
+.action-btn {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 16rpx;
+  margin: 0 10rpx;
+  background: #fff;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+  transition: all 0.3s;
   
-  .action-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-width: 70px;
-    background: #ffffff;
-    border-radius: $border-radius;
-    padding: $padding-sm 5px;
-    box-shadow: $box-shadow;
-    text-align: center;
-    
-    &.primary {
-      background-color: $primary-color;
-      color: white;
-    }
-    
-    &.danger {
-      background-color: $danger-color;
-      color: white;
-    }
-    
-    &.warning {
-      background-color: $warning-color;
-      color: white;
-    }
-    
-    .action-icon {
-      color: #000000;
-      font-size: 18px;
-      margin-bottom: 4px;
-    }
-    
-    .action-btn-text {
-      font-size: 12px;
-    }
+  &.primary {
+    background: linear-gradient(135deg, #1890ff, #096dd9);
+    color: #fff;
+  }
+  
+  &.danger {
+    background: linear-gradient(135deg, #ff4d4f, #cf1322);
+    color: #fff;
+  }
+  
+  &:active {
+    transform: scale(0.95);
   }
 }
 
-// 列表样式
+.action-btn-text {
+  font-size: 24rpx;
+  margin-top: 10rpx;
+}
+
+/* 用户列表 */
 .user-list {
-  background-color: #ffffff;
-  border-radius: $border-radius;
-  box-shadow: $box-shadow;
-  overflow: hidden;
+  margin-bottom: 40rpx;
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 0;
+  font-size: 26rpx;
+  color: $text-light;
+}
+
+.status-filter {
+  display: flex;
+  gap: 30rpx;
   
-  .user-header {
-    display: flex;
-    justify-content: space-between;
-    padding: $padding-md;
-    font-weight: bold;
-    background-color: #f1f4f8;
-    border-bottom: 1px solid $border-color;
-  }
-  
-  .user-item {
-    border-bottom: 1px solid #eee;
-    padding: $padding-md;
-    position: relative;
+  text {
+    padding: 8rpx 16rpx;
+    border-radius: 8rpx;
     
-    .user-info {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-      
-      .user-name {
-        font-weight: bold;
-        font-size: 16px;
-      }
-      
-      .user-id {
-        font-size: 12px;
-        color: #909399;
-        margin-top: 4px;
-      }
+    &.active {
+      background: $primary-color;
+      color: #fff;
     }
-    
-    .user-details {
-      display: grid;
-      grid-template-columns: repeat(1, 1fr);
-      gap: 8px;
-      margin: 10px 0;
-      
-      .user-detail {
-        display: flex;
-        align-items: center;
-        font-size: 14px;
-        
-        .detail-label {
-          color: #606266;
-          min-width: 80px;
-        }
-      }
-    }
-    
-    .user-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 8px;
-      margin-top: 10px;
-      
-      .action-icon {
-        width: 70px;
-        height: 36px;
-        border-radius: 18px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #f1f4f8;
-        font-size: 14px;
-        
-        &.edit {
-          color: $primary-color;
-          background-color: rgba(64, 158, 255, 0.1);
-        }
-        
-        &.delete {
-          color: $danger-color;
-          background-color: rgba(245, 108, 108, 0.1);
-        }
-        
-        &.more {
-          color: #909399;
-        }
-      }
-    }
-  }
-  
-  .empty {
-    text-align: center;
-    padding: 30px 0;
-    color: #909399;
-    font-size: 14px;
   }
 }
 
-// 弹窗样式
-.popup-content {
-  padding: $padding-lg;
-  background: #ffffff;
-  border-radius: $border-radius $border-radius 0 0;
+.user-card {
+  background: #fff;
+  border-radius: 16rpx;
+  margin-bottom: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.03);
+  transition: all 0.3s;
   
-  .popup-header {
-    font-size: 18px;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 20px;
+  &:active {
+    transform: translateY(-4rpx);
+    box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.08);
   }
   
-  .form-group {
-    margin-bottom: 15px;
+  &.card-disabled {
+    opacity: 0.8;
+  }
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  padding: 30rpx;
+  border-bottom: 1px solid $border-color;
+  position: relative;
+}
+
+.user-avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 20rpx;
+  background: #f0f2f5;
+  
+  .avatar-img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.user-info {
+  flex: 1;
+}
+
+.user-name {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: $text-color;
+  margin-bottom: 10rpx;
+}
+
+.user-id {
+  font-size: 24rpx;
+  color: $text-light;
+}
+
+.status-badge {
+  position: absolute;
+  right: 30rpx;
+  top: 30rpx;
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  
+  &.active {
+    background: rgba($success-color, 0.1);
+    color: $success-color;
+  }
+  
+  &.inactive {
+    background: rgba($danger-color, 0.1);
+    color: $danger-color;
+  }
+}
+
+.card-content {
+  padding: 30rpx;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+  font-size: 28rpx;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.info-text {
+  margin-left: 10rpx;
+  color: $text-light;
+}
+
+.card-actions {
+  display: flex;
+  border-top: 1px solid $border-color;
+  padding: 0 20rpx;
+}
+
+.action-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20rpx 0;
+  font-size: 24rpx;
+  color: $text-light;
+  
+  &:active {
+    background: #f9f9f9;
+  }
+}
+
+/* 空状态 */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100rpx 0;
+  background: #fff;
+  border-radius: 16rpx;
+}
+
+.empty-img {
+  width: 200rpx;
+  height: 200rpx;
+  margin-bottom: 30rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: $text-light;
+  margin-bottom: 30rpx;
+}
+
+.empty-btn {
+  width: 60%;
+  height: 80rpx;
+  line-height: 80rpx;
+  background: $primary-color;
+  color: #fff;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+}
+
+/* 分页 */
+.pagination-container {
+  position: sticky;
+  bottom: 0;
+  background: #fff;
+  padding: 20rpx;
+  border-top: 1px solid $border-color;
+  z-index: 10;
+}
+
+.pagination {
+  background: transparent;
+}
+
+/* 弹窗样式 */
+.custom-popup {
+  z-index: 1000;
+}
+
+.popup-card {
+  width: 650rpx;
+  background: #fff;
+  border-radius: 24rpx;
+  overflow: hidden;
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx;
+  font-size: 32rpx;
+  font-weight: 500;
+  border-bottom: 1px solid $border-color;
+}
+
+.form-container {
+  max-height: 70vh;
+  padding: 0 30rpx;
+}
+
+.form-group {
+  padding: 30rpx 0;
+  border-bottom: 1px solid $border-color;
+  
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.form-label {
+  display: block;
+  font-size: 28rpx;
+  margin-bottom: 16rpx;
+  color: $text-color;
+}
+
+.form-input {
+  height: 80rpx;
+  background: #f5f7fa;
+  border-radius: 12rpx;
+  padding: 0 20rpx;
+  font-size: 28rpx;
+  border: 1px solid $border-color;
+}
+
+
+
+.switch-label {
+  margin-left: 20rpx;
+  font-size: 28rpx;
+}
+
+.popup-footer {
+  display: flex;
+  padding: 20rpx;
+  border-top: 1px solid $border-color;
+}
+
+.dialog-btn {
+  flex: 1;
+  height: 80rpx;
+  line-height: 80rpx;
+  border-radius: 12rpx;
+  margin: 0 10rpx;
+  background: #fff;
+  color: $text-light;
+  border: 1px solid $border-color;
+  font-size: 28rpx;
+  
+  &.primary {
+    background: $primary-color;
+    color: #fff;
+    border: none;
+  }
+}
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 0;
+  font-size: 26rpx;
+  color: $text-light;
+}
+
+.status-filter {
+  display: flex;
+  background: #f5f7fa;
+  border-radius: 40rpx;
+  padding: 4rpx;
+  
+  text {
+    padding: 8rpx 24rpx;
+    border-radius: 40rpx;
+    font-size: 24rpx;
+    transition: all 0.3s;
     
-    .form-label {
-      display: block;
-      margin-bottom: 6px;
+    &.active {
+      background: $primary-color;
+      color: #fff;
       font-weight: 500;
     }
     
-    .form-input {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid $border-color;
-      border-radius: 6px;
-      font-size: 14px;
-      height: 45px;
-    }
-  }
-  
-  .popup-footer {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-    gap: 10px;
-    
-    .dialog-btn {
-      flex: 1;
-      height: 44px;
-      line-height: 44px;
-      text-align: center;
-      border-radius: 6px;
-      font-size: 16px;
-      background: #ffffff;
-      border: 1px solid $border-color;
-      
-      &.primary {
-        background: $primary-color;
-        color: white;
-        border: none;
+    &:not(.active) {
+      color: $text-light;
+      &:active {
+        opacity: 0.8;
       }
     }
   }
 }
-
-.reset-pwd-popup {
-  padding: $padding-lg;
-  background: #ffffff;
-  border-radius: $border-radius;
-  width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
+/* 水平操作按钮栏样式 */
+.action-bar-horizontal {
+  display: flex;
+  gap: 20rpx;
+  margin-bottom: 20rpx;
+  padding: 0 10rpx;
+  overflow-x: auto;
+  white-space: nowrap;
 }
 
-// 开关样式
-.switch {
+.action-bar-horizontal .action-btn {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  min-width: 140rpx;
+  height: 80rpx;
+  border-radius: 16rpx;
+  padding: 0 30rpx;
+  margin: 0;
+}
+
+.action-bar-horizontal .action-btn-text {
+  margin-top: 0;
+  margin-left: 10rpx;
+}
+.user-card {
   position: relative;
-  width: 40px;
-  height: 22px;
-  border-radius: 11px;
-  background: #ddd;
+  padding-left: 40px; // 为选择框留出空间
   
-  &:after {
-    content: '';
+  .user-selector {
     position: absolute;
-    width: 18px;
-    height: 18px;
-    background: white;
-    border-radius: 50%;
-    top: 2px;
-    left: 2px;
-    transition: all 0.3s;
-  }
-  
-  &.active {
-    background: $primary-color;
-    
-    &:after {
-      left: 20px;
-    }
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
   }
 }
-
-// 响应式样式
-@media (min-width: 768px) {
-  .user-details {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.list-header {
+  display: flex;
+  align-items: center;
   
-  .popup-content {
-    max-width: 500px;
-    margin: 0 auto;
-    border-radius: $border-radius;
+  .select-all {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+    
+    text {
+      margin-left: 5px;
+      font-size: 14px;
+    }
   }
 }
