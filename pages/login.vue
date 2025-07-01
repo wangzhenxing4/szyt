@@ -40,7 +40,7 @@
       <view class="header">
         <uni-icons 
           class="back-icon" 
-          type="arrowleft" 
+          type="arrow-left" 
           size="24" 
           color="#333"
           @click="setCurrentPage('welcome')"
@@ -136,7 +136,7 @@
       <view class="header">
         <uni-icons 
           class="back-icon" 
-          type="arrowleft" 
+          type="arrow-left" 
           size="24" 
           color="#333"
           @click="setCurrentPage('welcome')"
