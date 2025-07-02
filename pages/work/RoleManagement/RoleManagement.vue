@@ -95,7 +95,7 @@
               </view>
 			<view class="card-header">
               <view class="user-avatar">
-                <uni-icons type="person" size="56" color="#1890ff"></uni-icons>
+                <uni-icons type="person" size="57" color="#1890ff"></uni-icons>
               </view>
               <view class="user-info">
                 <view class="user-name">{{ role.roleName }}</view>
