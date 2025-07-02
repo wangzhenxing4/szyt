@@ -375,26 +375,30 @@
   /* 保持原有样式不变 */
   .auth-container {
     height: 100vh;
+    height: calc(100vh - var(--window-top)); /* 关键：减去顶部导航栏高度 */
+    width: 100vw;
+    overflow: hidden; /* 禁止滚动 */
     background: linear-gradient(135deg, #f5f7fa 0%, #e4e7f0 100%);
     display: flex;
     flex-direction: column;
     padding: 40rpx;
+    box-sizing: border-box; /* 确保padding不影响总高度 */
     font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
     
     .welcome-section {
       flex: 1;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
+      justify-content: space-between; /* 保持整体空间分布 */
       padding-top: 80rpx;
-      animation: fadeIn 0.6s ease-out;
+      padding-bottom: 60rpx; /* 增加底部内边距 */
       
       .brand-section {
         display: flex;
         flex-direction: column;
         align-items: center;
         margin-bottom: 60rpx;
+		margin-top: 60rpx;
         
         .app-logo {
           width: 180rpx;
@@ -489,6 +493,7 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
+		margin-bottom: 40rpx; /* 确保底部有足够空间 */
         
         .link {
             color: #5E72E4;
